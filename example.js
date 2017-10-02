@@ -12,10 +12,10 @@ function Goat(name, filePath) {
 
 // Make new image instances
 new Goat('Cruisin Goat', 'img/cruisin-goat.jpg');
-new Goat('Kissing Goat', 'img/kissing-goat.jpg')
-new Goat('Sassy Goat', 'img/sassy-goat.jpg')
-new Goat('Smiling Goat', 'img/smiling-goat.jpg')
-new Goat('Sweater Goat', 'img/sweater-goat.jpg')
+new Goat('Kissing Goat', 'img/kissing-goat.jpg');
+new Goat('Sassy Goat', 'img/sassy-goat.jpg');
+new Goat('Smiling Goat', 'img/smiling-goat.jpg');
+new Goat('Sweater Goat', 'img/sweater-goat.jpg');
 
 
 
