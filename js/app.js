@@ -71,13 +71,13 @@ function buildData() {
     liEl.textContent = BusPic.all[i].name;
     ulEl.appendChild(liEl);
     liEl = document.createElement('li');
-    liEl.textContent = 'Votes: ' + BusPic.all[i].votes;
+    liEl.textContent = BusPic.all[i].votes + ' vote(s) for the ' + BusPic.all[i].name;
     ulEl.appendChild(liEl);
     liEl = document.createElement('li');
     liEl.textContent = 'Displayed: ' + BusPic.all[i].displayed;
     ulEl.appendChild(liEl);
     liEl = document.createElement('li');
-    liEl.textContent = 'Percentage: ' + (BusPic.all[i].votes / BusPic.all[i].displayed);
+    liEl.textContent = 'Percentage: ' + ((BusPic.all[i].votes / BusPic.all[i].displayed) * 100).toFixed(2) + '%';
     ulEl.appendChild(liEl);
 
 
