@@ -4,6 +4,7 @@
 BusPic.all = [];
 var random1, random2, random3, counter = 0;
 var duplicateCheck = [];
+var info = document.getElementById('information');
 
 // image constructor
 function BusPic(name, fileName) {
@@ -20,22 +21,22 @@ new BusPic('Bag', 'bag.jpg');
 new BusPic('Banana', 'banana.jpg');
 new BusPic('Bathroom', 'bathroom.jpg');
 new BusPic('Boots', 'boots.jpg');
-new BusPic('breakfast', 'breakfast.jpg');
-new BusPic('bubblegum', 'bubblegum.jpg');
-new BusPic('chair', 'chair.jpg');
-new BusPic('cthulhu', 'cthulhu.jpg');
-new BusPic('dog duck', 'dog-duck.jpg');
-// new BusPic('dragon', 'dragon.jpg');
-// new BusPic('pen', 'pen.jpg');
-// new BusPic('pet sweep', 'pet-sweep.jpg');
-// new BusPic('scissors', 'scissors.jpg');
-// new BusPic('shark', 'shark.jpg');
-// new BusPic('sweep', 'sweep.png');
-// new BusPic('taun taun', 'tauntaun.jpg');
-// new BusPic('unicorn', 'unicorn.jpg');
-// new BusPic('usb', 'usb.gif');
-// new BusPic('water can', 'water-can.jpg');
-// new BusPic('wine glass', 'wine-glass.jpg');
+new BusPic('Breakfast', 'breakfast.jpg');
+new BusPic('Bubblegum', 'bubblegum.jpg');
+new BusPic('Chair', 'chair.jpg');
+new BusPic('Cthulhu', 'cthulhu.jpg');
+new BusPic('Dog Duck', 'dog-duck.jpg');
+new BusPic('Dragon', 'dragon.jpg');
+new BusPic('Pen', 'pen.jpg');
+new BusPic('Pet Sweep', 'pet-sweep.jpg');
+new BusPic('Scissors', 'scissors.jpg');
+new BusPic('Shark', 'shark.jpg');
+new BusPic('Sweep', 'sweep.png');
+new BusPic('Taun Taun', 'tauntaun.jpg');
+new BusPic('Unicorn', 'unicorn.jpg');
+new BusPic('Usb', 'usb.gif');
+new BusPic('Water Can', 'water-can.jpg');
+new BusPic('Wine Glass', 'wine-glass.jpg');
 
 // listener
 var imgEl = document.getElementById('random_image');
@@ -62,11 +63,34 @@ function vote3() {
   randomize();
 }
 
+function buildData() {
+  for (var i = 0; i < BusPic.all.length; i ++) {
+    var ulEl = document.createElement('ul');
+
+    var liEl = document.createElement('li');
+    liEl.textContent = BusPic.all[i].name;
+    ulEl.appendChild(liEl);
+    liEl = document.createElement('li');
+    liEl.textContent = 'Votes: ' + BusPic.all[i].votes;
+    ulEl.appendChild(liEl);
+    liEl = document.createElement('li');
+    liEl.textContent = 'Displayed: ' + BusPic.all[i].displayed;
+    ulEl.appendChild(liEl);
+    liEl = document.createElement('li');
+    liEl.textContent = 'Percentage: ' + (BusPic.all[i].votes / BusPic.all[i].displayed);
+    ulEl.appendChild(liEl);
+
+
+    info.appendChild(ulEl);
+  }
+}
+
 function randomize() {
   counter += 1;
   if (counter > 25) {
-    document.getElementById('information').innerHTML = '';
-    
+    info.innerHTML = '';
+    console.log('pictures cleared');
+    buildData();
   }
   do {
     random1 = Math.floor(Math.random() * BusPic.all.length);
