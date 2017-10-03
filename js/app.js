@@ -28,20 +28,20 @@ new Bus('Bathroom', 'bathroom.jpg');
 new Bus('Boots', 'boots.jpg');
 new Bus('Breakfast', 'breakfast.jpg');
 new Bus('Bubblegum', 'bubblegum.jpg');
-// new Bus('Chair', 'chair.jpg');
-// new Bus('Cthulhu', 'cthulhu.jpg');
-// new Bus('Dog Duck', 'dog-duck.jpg');
-// new Bus('Dragon', 'dragon.jpg');
-// new Bus('Pen', 'pen.jpg');
-// new Bus('Pet Sweep', 'pet-sweep.jpg');
-// new Bus('Scissors', 'scissors.jpg');
-// new Bus('Shark', 'shark.jpg');
-// new Bus('Sweep', 'sweep.png');
-// new Bus('Taun Taun', 'tauntaun.jpg');
-// new Bus('Unicorn', 'unicorn.jpg');
-// new Bus('Usb', 'usb.gif');
-// new Bus('Water Can', 'water-can.jpg');
-// new Bus('Wine Glass', 'wine-glass.jpg');
+new Bus('Chair', 'chair.jpg');
+new Bus('Cthulhu', 'cthulhu.jpg');
+new Bus('Dog Duck', 'dog-duck.jpg');
+new Bus('Dragon', 'dragon.jpg');
+new Bus('Pen', 'pen.jpg');
+new Bus('Pet Sweep', 'pet-sweep.jpg');
+new Bus('Scissors', 'scissors.jpg');
+new Bus('Shark', 'shark.jpg');
+new Bus('Sweep', 'sweep.png');
+new Bus('Taun Taun', 'tauntaun.jpg');
+new Bus('Unicorn', 'unicorn.jpg');
+new Bus('Usb', 'usb.gif');
+new Bus('Water Can', 'water-can.jpg');
+new Bus('Wine Glass', 'wine-glass.jpg');
 
 
 
@@ -68,7 +68,7 @@ function addVote(selected) {
   randomize(); // creates random image for all three sections
 }
 
-function buildData() {
+function buildData() { // eslint-disable-line
   for (var i = 0; i < Bus.all.length; i ++) { // cycles through images
     var ulEl = document.createElement('ul'); // creates unordered list
 
@@ -85,39 +85,40 @@ function buildData() {
     liEl.textContent = 'Percentage: ' + ((Bus.all[i].votes / Bus.all[i].displayed) * 100).toFixed(2) + '%'; // adds percentage given from votes and times displayed
     ulEl.appendChild(liEl);
 
-    info.appendChild(ulEl); // attaches entire unorodered list created to 'information' ID
+    info.prepend(ulEl); // attaches entire unorodered list created to 'information' ID
   }
 }
 
 function randomize() {
-  if (totalClicks >= 5) { // when 25 cycles are met.
-    info.innerHTML = ''; // clears the images window
+  if (totalClicks >= 25) { // when 25 cycles are met.
+    info.removeChild(imagesDisplayed); // clears the images window
     console.log('pictures cleared'); // acknowledgement
-    buildData(); // creates lists for each picture responding name/votes/times displayed/and percentage.
+    submitResults(); // creates lists for each picture responding name/votes/times displayed/and percentage.
+  } else {
+
+    do {
+      random1 = Math.floor(Math.random() * Bus.all.length); // randomly geneerates number in the bus pictures array
+    } while (duplicateCheck.includes(random1)); // checks if the number is a duplicate
+    do {
+      random2 = Math.floor(Math.random() * Bus.all.length);
+    } while (duplicateCheck.includes(random2) || random2 === random1); // checks if the second random picture is that same as the first or is a duplicate
+    do {
+      random3 = Math.floor(Math.random() * Bus.all.length);
+    } while (duplicateCheck.includes(random3) || random3 === random1 || random3 === random2); // dupliacte and newly created image comparison check
+
+    duplicateCheck = []; // clears duplicate checker
+
+    imgEl.src = Bus.all[random1].path; // changes the three source images to the newly generated ones
+    imgEl2.src = Bus.all[random2].path;
+    imgEl3.src = Bus.all[random3].path;
+    imgEl.alt = Bus.all[random1].alt;
+    imgEl2.alt = Bus.all[random2].alt;
+    imgEl3.alt = Bus.all[random3].alt;
+
+    duplicateCheck.push(random1); // adds picture chosen to an array so it won't be duplicated
+    duplicateCheck.push(random2);
+    duplicateCheck.push(random3);
   }
-
-  do {
-    random1 = Math.floor(Math.random() * Bus.all.length); // randomly geneerates number in the bus pictures array
-  } while (duplicateCheck.includes(random1)); // checks if the number is a duplicate
-  do {
-    random2 = Math.floor(Math.random() * Bus.all.length);
-  } while (duplicateCheck.includes(random2) || random2 === random1); // checks if the second random picture is that same as the first or is a duplicate
-  do {
-    random3 = Math.floor(Math.random() * Bus.all.length);
-  } while (duplicateCheck.includes(random3) || random3 === random1 || random3 === random2); // dupliacte and newly created image comparison check
-
-  duplicateCheck = []; // clears duplicate checker
-
-  imgEl.src = Bus.all[random1].path; // changes the three source images to the newly generated ones
-  imgEl2.src = Bus.all[random2].path;
-  imgEl3.src = Bus.all[random3].path;
-  imgEl.alt = Bus.all[random1].alt;
-  imgEl2.alt = Bus.all[random2].alt;
-  imgEl3.alt = Bus.all[random3].alt;
-
-  duplicateCheck.push(random1); // adds picture chosen to an array so it won't be duplicated
-  duplicateCheck.push(random2);
-  duplicateCheck.push(random3);
 }
 
 // event listeners
@@ -150,9 +151,27 @@ function buildChart() {
     data: {
       labels: Bus.allNames,
       datasets: [{
-        label: 'Chosen Images',
+        label: 'Votes out of 25',
         data: Bus.allVotes,
         backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
@@ -166,9 +185,27 @@ function buildChart() {
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
           'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)'
         ],
-        borderWidth: 1
+        borderWidth: 2
       }]
     },
     options: {
