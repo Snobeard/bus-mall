@@ -2,7 +2,7 @@
 
 // store images
 BusPic.all = [];
-var random1, random2, random3;
+var random1, random2, random3, counter = 0;
 var duplicateCheck = [];
 
 // image constructor
@@ -39,31 +39,37 @@ new BusPic('dog duck', 'dog-duck.jpg');
 
 // listener
 var imgEl = document.getElementById('random_image');
-imgEl.addEventListener('click', count1);
+imgEl.addEventListener('click', vote1);
 var imgEl2 = document.getElementById('random_image_2');
-imgEl2.addEventListener('click', count2);
+imgEl2.addEventListener('click', vote2);
 var imgEl3 = document.getElementById('random_image_3');
-imgEl3.addEventListener('click', count3);
+imgEl3.addEventListener('click', vote3);
 
 
-function count1() {
+function vote1() {
   BusPic.all[random1].votes += 1;
+  console.log('name is ' + BusPic.all[random1].name + ': ' + BusPic.all[random1].votes);
   randomize();
 }
-function count2() {
+function vote2() {
   BusPic.all[random2].votes += 1;
+  console.log('name is ' + BusPic.all[random2].name + ': ' + BusPic.all[random2].votes);
   randomize();
 }
-function count3() {
+function vote3() {
   BusPic.all[random3].votes += 1;
   console.log('name is ' + BusPic.all[random3].name + ': ' + BusPic.all[random3].votes);
   randomize();
 }
 
 function randomize() {
+  counter += 1;
+  if (counter > 25) {
+    document.getElementById('information').innerHTML = '';
+    
+  }
   do {
     random1 = Math.floor(Math.random() * BusPic.all.length);
-    console.log('random 1 trying to compute: ' + random1);
   } while (duplicateCheck.includes(random1));
   do {
     random2 = Math.floor(Math.random() * BusPic.all.length);
@@ -78,7 +84,6 @@ function randomize() {
   imgEl2.src = BusPic.all[random2].path;
   imgEl3.src = BusPic.all[random3].path;
 
-  console.log(BusPic.all[random1].name + (BusPic.all[random1].displayed + 1));
   BusPic.all[random1].displayed += 1;
   BusPic.all[random2].displayed += 1;
   BusPic.all[random3].displayed += 1;
