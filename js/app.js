@@ -138,8 +138,8 @@ function submitResults() { //eslint-disable-line
     Bus.allVotes.push(Bus.all[i].votes);
     Bus.allDisplayed.push(Bus.all[i].displayed);
     Bus.allNames.push(Bus.all[i].name);
-    buildChart();
   };
+  buildChart();
 }
 
 // run Chart
