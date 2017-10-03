@@ -3,6 +3,7 @@
 // store images
 BusPic.all = [];
 var random1, random2, random3;
+var duplicateCheck = [];
 
 // image constructor
 function BusPic(name, fileName) {
@@ -18,12 +19,12 @@ function BusPic(name, fileName) {
 new BusPic('Bag', 'bag.jpg');
 new BusPic('Banana', 'banana.jpg');
 new BusPic('Bathroom', 'bathroom.jpg');
-// new BusPic('Boots', 'boots.jpg');
-// new BusPic('breakfast', 'breakfast.jpg');
-// new BusPic('bubblegum', 'bubblegum.jpg');
-// new BusPic('chair', 'chair.jpg');
-// new BusPic('cthulhu', 'cthulhu.jpg');
-// new BusPic('dog duck', 'dog-duck.jpg');
+new BusPic('Boots', 'boots.jpg');
+new BusPic('breakfast', 'breakfast.jpg');
+new BusPic('bubblegum', 'bubblegum.jpg');
+new BusPic('chair', 'chair.jpg');
+new BusPic('cthulhu', 'cthulhu.jpg');
+new BusPic('dog duck', 'dog-duck.jpg');
 // new BusPic('dragon', 'dragon.jpg');
 // new BusPic('pen', 'pen.jpg');
 // new BusPic('pet sweep', 'pet-sweep.jpg');
@@ -58,16 +59,20 @@ function count3() {
   console.log('name is ' + BusPic.all[random3].name + ': ' + BusPic.all[random3].votes);
   randomize();
 }
-function randomize() {
-  var duplicate = [];
 
-  random1 = Math.floor(Math.random() * BusPic.all.length);
+function randomize() {
+  do {
+    random1 = Math.floor(Math.random() * BusPic.all.length);
+    console.log('random 1 trying to compute: ' + random1);
+  } while (duplicateCheck.includes(random1));
   do {
     random2 = Math.floor(Math.random() * BusPic.all.length);
-  } while (random2 === random1);
+  } while (duplicateCheck.includes(random2) || random2 === random1);
   do {
     random3 = Math.floor(Math.random() * BusPic.all.length);
-  } while (random3 === random1 || random3 === random2);
+  } while (duplicateCheck.includes(random3) || random3 === random1 || random3 === random2);
+
+  duplicateCheck = [];
 
   imgEl.src = BusPic.all[random1].path;
   imgEl2.src = BusPic.all[random2].path;
@@ -77,6 +82,10 @@ function randomize() {
   BusPic.all[random1].displayed += 1;
   BusPic.all[random2].displayed += 1;
   BusPic.all[random3].displayed += 1;
+
+  duplicateCheck.push(random1);
+  duplicateCheck.push(random2);
+  duplicateCheck.push(random3);
 }
 
 randomize();
