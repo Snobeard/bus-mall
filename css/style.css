@@ -1,0 +1,11 @@
+img {
+  max-width: 300px;
+}
+#information ul {
+  display: inline-block;
+  width: 300px;
+}
+#information ul li:first-child {
+  font-size: 25px;
+  text-decoration: underline;
+}
