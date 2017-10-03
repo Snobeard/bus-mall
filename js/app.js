@@ -2,7 +2,7 @@
 
 // store images
 BusPic.all = [];
-var count = 0;
+var random1, random2, random3;
 
 // image constructor
 function BusPic(name, fileName) {
@@ -38,35 +38,45 @@ new BusPic('Bathroom', 'bathroom.jpg');
 
 // listener
 var imgEl = document.getElementById('random_image');
-imgEl.addEventListener('click', randomize);
+imgEl.addEventListener('click', count1);
 var imgEl2 = document.getElementById('random_image_2');
-imgEl2.addEventListener('click', randomize);
+imgEl2.addEventListener('click', count2);
 var imgEl3 = document.getElementById('random_image_3');
-imgEl3.addEventListener('click', randomize);
-// imgEl3.addEventListener('click', test);
+imgEl3.addEventListener('click', count3);
 
 
-
-
+function count1() {
+  BusPic.all[random1].votes += 1;
+  randomize();
+}
+function count2() {
+  BusPic.all[random2].votes += 1;
+  randomize();
+}
+function count3() {
+  BusPic.all[random3].votes += 1;
+  console.log('name is ' + BusPic.all[random3].name + ': ' + BusPic.all[random3].votes);
+  randomize();
+}
 function randomize() {
-  count += 1;
-  var reset = [];
-  var random1 = Math.floor(Math.random() * BusPic.all.length);
-  // console.log('random 1: ' + random1);
+  var duplicate = [];
+
+  random1 = Math.floor(Math.random() * BusPic.all.length);
   do {
-    var random2 = Math.floor(Math.random() * BusPic.all.length);
-    // console.log('random 2: ' + random2);
+    random2 = Math.floor(Math.random() * BusPic.all.length);
   } while (random2 === random1);
   do {
-    var random3 = Math.floor(Math.random() * BusPic.all.length);
-    // console.log('random 3: ' + random3);
+    random3 = Math.floor(Math.random() * BusPic.all.length);
   } while (random3 === random1 || random3 === random2);
-  // console.log('1,2,3 - ' + random1 + random2 + random3);
+
   imgEl.src = BusPic.all[random1].path;
-  imgEl.alt = BusPic.all[random1].name;
   imgEl2.src = BusPic.all[random2].path;
   imgEl3.src = BusPic.all[random3].path;
 
   console.log(BusPic.all[random1].name + (BusPic.all[random1].displayed + 1));
   BusPic.all[random1].displayed += 1;
+  BusPic.all[random2].displayed += 1;
+  BusPic.all[random3].displayed += 1;
 }
+
+randomize();
