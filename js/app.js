@@ -1,7 +1,10 @@
 'use strict';
 
 // store images
-BusPic.all = [];
+Bus.all = [];
+Bus.allVotes = [];
+Bus.allDisplayed = [];
+Bus.allNames = [];
 var random1, random2, random3;
 var duplicateCheck = [];
 var info = document.getElementById('information');
@@ -9,43 +12,43 @@ var totalClicks = 0; // eslint-disable-line
 
 
 // image constructor
-function BusPic(name, fileName) {
+function Bus(name, fileName) {
   this.path = 'img/' + fileName;
   this.name = name;
-  this.alt = fileName.split('.')[0] + (BusPic.all.length);
+  this.alt = fileName.split('.')[0] + (Bus.all.length);
   this.votes = 0;
   this.displayed = 0;
-  BusPic.all.push(this);
+  Bus.all.push(this);
 }
 
 // new images
-new BusPic('Bag', 'bag.jpg');
-new BusPic('Banana', 'banana.jpg');
-new BusPic('Bathroom', 'bathroom.jpg');
-new BusPic('Boots', 'boots.jpg');
-new BusPic('Breakfast', 'breakfast.jpg');
-new BusPic('Bubblegum', 'bubblegum.jpg');
-new BusPic('Chair', 'chair.jpg');
-new BusPic('Cthulhu', 'cthulhu.jpg');
-new BusPic('Dog Duck', 'dog-duck.jpg');
-new BusPic('Dragon', 'dragon.jpg');
-new BusPic('Pen', 'pen.jpg');
-new BusPic('Pet Sweep', 'pet-sweep.jpg');
-new BusPic('Scissors', 'scissors.jpg');
-new BusPic('Shark', 'shark.jpg');
-new BusPic('Sweep', 'sweep.png');
-new BusPic('Taun Taun', 'tauntaun.jpg');
-new BusPic('Unicorn', 'unicorn.jpg');
-new BusPic('Usb', 'usb.gif');
-new BusPic('Water Can', 'water-can.jpg');
-new BusPic('Wine Glass', 'wine-glass.jpg');
+new Bus('Bag', 'bag.jpg');
+new Bus('Banana', 'banana.jpg');
+new Bus('Bathroom', 'bathroom.jpg');
+new Bus('Boots', 'boots.jpg');
+new Bus('Breakfast', 'breakfast.jpg');
+new Bus('Bubblegum', 'bubblegum.jpg');
+new Bus('Chair', 'chair.jpg');
+new Bus('Cthulhu', 'cthulhu.jpg');
+new Bus('Dog Duck', 'dog-duck.jpg');
+new Bus('Dragon', 'dragon.jpg');
+new Bus('Pen', 'pen.jpg');
+new Bus('Pet Sweep', 'pet-sweep.jpg');
+new Bus('Scissors', 'scissors.jpg');
+new Bus('Shark', 'shark.jpg');
+new Bus('Sweep', 'sweep.png');
+new Bus('Taun Taun', 'tauntaun.jpg');
+new Bus('Unicorn', 'unicorn.jpg');
+new Bus('Usb', 'usb.gif');
+new Bus('Water Can', 'water-can.jpg');
+new Bus('Wine Glass', 'wine-glass.jpg');
 
 
 
 function vote(event) { //
-  for (var i = 0; i < BusPic.all.length; i ++) {
-    if (event.target.alt === BusPic.all[i].alt) {
-      console.log(BusPic.all[i] + ' is the event');
+  for (var i = 0; i < Bus.all.length; i ++) {
+    if (event.target.alt === Bus.all[i].alt) {
+      console.log(Bus.all[i] + ' is the event');
       break;
     }
   }
@@ -55,66 +58,67 @@ function vote(event) { //
 function addVote(selected) {
   totalClicks += 1;
 
-  BusPic.all[random1].displayed += 1; // adds a  +1 counter to each image that was shown
-  BusPic.all[random2].displayed += 1;
-  BusPic.all[random3].displayed += 1;
+  Bus.all[random1].displayed += 1; // adds a  +1 counter to each image that was shown
+  Bus.all[random2].displayed += 1;
+  Bus.all[random3].displayed += 1;
 
-  BusPic.all[selected].votes += 1; // adds vote to image selected
+  Bus.all[selected].votes += 1; // adds vote to image selected
 
-  console.log('name is ' + BusPic.all[selected].name + ': ' + BusPic.all[selected].votes); // console log for selected validation
+  console.log('name is ' + Bus.all[selected].name + ': ' + Bus.all[selected].votes); // console log for selected validation
   randomize(); // creates random image for all three sections
 }
 
-function buildData() {
-  for (var i = 0; i < BusPic.all.length; i ++) { // cycles through images
+function buildData() { // eslint-disable-line
+  for (var i = 0; i < Bus.all.length; i ++) { // cycles through images
     var ulEl = document.createElement('ul'); // creates unordered list
 
     var liEl = document.createElement('li'); // create list element
-    liEl.textContent = BusPic.all[i].name; // add the name for each image
+    liEl.textContent = Bus.all[i].name; // add the name for each image
     ulEl.appendChild(liEl); // adds the created name list to the unordered list
     liEl = document.createElement('li');
-    liEl.textContent = BusPic.all[i].votes + ' vote(s) for the ' + BusPic.all[i].name; // adds votes for each image
+    liEl.textContent = Bus.all[i].votes + ' vote(s) for the ' + Bus.all[i].name; // adds votes for each image
     ulEl.appendChild(liEl);
     liEl = document.createElement('li');
-    liEl.textContent = 'Displayed: ' + BusPic.all[i].displayed; // adds times displayed
+    liEl.textContent = 'Displayed: ' + Bus.all[i].displayed; // adds times displayed
     ulEl.appendChild(liEl);
     liEl = document.createElement('li');
-    liEl.textContent = 'Percentage: ' + ((BusPic.all[i].votes / BusPic.all[i].displayed) * 100).toFixed(2) + '%'; // adds percentage given from votes and times displayed
+    liEl.textContent = 'Percentage: ' + ((Bus.all[i].votes / Bus.all[i].displayed) * 100).toFixed(2) + '%'; // adds percentage given from votes and times displayed
     ulEl.appendChild(liEl);
 
-
-    info.appendChild(ulEl); // attaches entire unorodered list created to 'information' ID
+    info.prepend(ulEl); // attaches entire unorodered list created to 'information' ID
   }
 }
 
 function randomize() {
-  if (totalClicks >= 5) { // when 25 cycles are met.
-    info.innerHTML = ''; // clears the images window
+  if (totalClicks >= 25) { // when 25 cycles are met.
+    info.removeChild(imagesDisplayed); // clears the images window
     console.log('pictures cleared'); // acknowledgement
-    buildData(); // creates lists for each picture responding name/votes/times displayed/and percentage.
+    submitResults(); // creates lists for each picture responding name/votes/times displayed/and percentage.
+  } else {
+
+    do {
+      random1 = Math.floor(Math.random() * Bus.all.length); // randomly geneerates number in the bus pictures array
+    } while (duplicateCheck.includes(random1)); // checks if the number is a duplicate
+    do {
+      random2 = Math.floor(Math.random() * Bus.all.length);
+    } while (duplicateCheck.includes(random2) || random2 === random1); // checks if the second random picture is that same as the first or is a duplicate
+    do {
+      random3 = Math.floor(Math.random() * Bus.all.length);
+    } while (duplicateCheck.includes(random3) || random3 === random1 || random3 === random2); // dupliacte and newly created image comparison check
+
+    duplicateCheck = []; // clears duplicate checker
+
+    imgEl.src = Bus.all[random1].path; // changes the three source images to the newly generated ones
+    imgEl2.src = Bus.all[random2].path;
+    imgEl3.src = Bus.all[random3].path;
+    imgEl.alt = Bus.all[random1].alt;
+    imgEl2.alt = Bus.all[random2].alt;
+    imgEl3.alt = Bus.all[random3].alt;
+
+    duplicateCheck.push(random1); // adds picture chosen to an array so it won't be duplicated
+    duplicateCheck.push(random2);
+    duplicateCheck.push(random3);
   }
-  do {
-    random1 = Math.floor(Math.random() * BusPic.all.length); // randomly geneerates number in the bus pictures array
-  } while (duplicateCheck.includes(random1)); // checks if the number is a duplicate
-  do {
-    random2 = Math.floor(Math.random() * BusPic.all.length);
-  } while (duplicateCheck.includes(random2) || random2 === random1); // checks if the second random picture is that same as the first or is a duplicate
-  do {
-    random3 = Math.floor(Math.random() * BusPic.all.length);
-  } while (duplicateCheck.includes(random3) || random3 === random1 || random3 === random2); // dupliacte and newly created image comparison check
-
-  duplicateCheck = []; // clears duplicate checker
-
-  imgEl.src = BusPic.all[random1].path; // changes the three source images to the newly generated ones
-  imgEl2.src = BusPic.all[random2].path;
-  imgEl3.src = BusPic.all[random3].path;
-  imgEl.alt = BusPic.all[random1].alt;
-  imgEl2.alt = BusPic.all[random2].alt;
-  imgEl3.alt = BusPic.all[random3].alt;
-
-  duplicateCheck.push(random1); // adds picture chosen to an array so it won't be duplicated
-  duplicateCheck.push(random2);
-  duplicateCheck.push(random3);
 }
 
 // event listeners
@@ -126,3 +130,101 @@ var imgEl3 = document.getElementById('random_image_3');
 imgEl3.addEventListener('click', vote);
 
 randomize(); // runs starter images
+
+function submitResults() { //eslint-disable-line
+  Bus.allVotes = [];
+  Bus.allDisplayed = [];
+  Bus.allNames = [];
+  for (var i = 0; i < Bus.all.length; i ++){
+    Bus.allVotes.push(Bus.all[i].votes);
+    Bus.allDisplayed.push(Bus.all[i].displayed);
+    Bus.allNames.push(Bus.all[i].name);
+  };
+  document.getElementById('resultsChart').style.display = 'show';
+  document.getElementById('information').style.backgroundColor = '#fffbf5';
+  buildChart();
+}
+
+// run Chart
+function buildChart() {
+  var ctx = document.getElementById('resultsChart').getContext('2d');
+  var myChart = new Chart(ctx, { // eslint-disable-line
+    type: 'bar',
+    data: {
+      labels: Bus.allNames,
+      datasets: [{
+        label: 'Votes out of 25',
+        data: Bus.allVotes,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            stepSize: 1,
+            beginAtZero:true,
+          }
+        }]
+      }
+    }
+  });
+}
