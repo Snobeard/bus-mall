@@ -213,11 +213,6 @@ function buildChart() {
     options: {
       responsive: false,
       scales: {
-        xAxes: [{
-          ticks: {
-            beginAtZero:true
-          }
-        }],
         yAxes: [{
           ticks: {
             stepSize: 1,
