@@ -140,6 +140,8 @@ function submitResults() { //eslint-disable-line
     Bus.allDisplayed.push(Bus.all[i].displayed);
     Bus.allNames.push(Bus.all[i].name);
   };
+  document.getElementById('resultsChart').style.display = 'show';
+  document.getElementById('information').style.backgroundColor = '#fffbf5';
   buildChart();
 }
 
