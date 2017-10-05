@@ -9,7 +9,18 @@ var random1, random2, random3;
 var duplicateCheck = [];
 var info = document.getElementById('information');
 var totalClicks = 0; // eslint-disable-line
+var localBusVotes, localBusDisplayed, localClicks;
 
+if (!localStorage.busVotes) {
+  localBusVotes = [];
+} else {
+  localBusVotes = JSON.parse(localStorage.busVotes);
+}
+if (!localStorage.totalClicks) {
+  localClicks = 0;
+} else {
+  localClicks = parseInt(localStorage.totalClicks);
+}
 
 // image constructor
 function Bus(name, fileName) {
@@ -44,11 +55,9 @@ new Bus('Water Can', 'water-can.jpg');
 new Bus('Wine Glass', 'wine-glass.jpg');
 
 
-
 function vote(event) { //
   for (var i = 0; i < Bus.all.length; i ++) {
     if (event.target.alt === Bus.all[i].alt) {
-      console.log(Bus.all[i] + ' is the event');
       break;
     }
   }
@@ -131,7 +140,7 @@ imgEl3.addEventListener('click', vote);
 
 randomize(); // runs starter images
 
-function submitResults() { //eslint-disable-line
+function submitResults() {
   Bus.allVotes = [];
   Bus.allDisplayed = [];
   Bus.allNames = [];
@@ -139,22 +148,34 @@ function submitResults() { //eslint-disable-line
     Bus.allVotes.push(Bus.all[i].votes);
     Bus.allDisplayed.push(Bus.all[i].displayed);
     Bus.allNames.push(Bus.all[i].name);
+
+    if (isNaN(localBusVotes[i])) {
+      localBusVotes[i] = 0 + Bus.all[i].votes;
+    } else {
+      localBusVotes[i] = localBusVotes[i] + Bus.all[i].votes;
+    }
   };
-  document.getElementById('resultsChart').style.display = 'show';
-  document.getElementById('information').style.backgroundColor = '#fffbf5';
+
+
+  localClicks = localClicks + totalClicks;
+  localStorage.totalClicks = JSON.stringify(localClicks);
+  localStorage.busVotes = JSON.stringify(localBusVotes);
+
+  document.getElementById('resultsChart').style.display = 'show'; // display chart
+  document.getElementById('information').style.backgroundColor = '#fffbf5'; // set chart background color to white
   buildChart();
 }
 
 // run Chart
 function buildChart() {
   var ctx = document.getElementById('resultsChart').getContext('2d');
-  var myChart = new Chart(ctx, { // eslint-disable-line
+  new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Bus.allNames,
       datasets: [{
-        label: 'Votes out of 25',
-        data: Bus.allVotes,
+        label: 'Votes out of ' + localClicks,
+        data: localBusVotes,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
