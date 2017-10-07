@@ -229,6 +229,15 @@ function buildChart() {
           'rgba(255, 159, 64, 1)'
         ],
         borderWidth: 2
+      },
+      {
+        label: 'Times displayed out of ' + localClicks,
+        data: localBusVotes,
+        backgroundColor: [
+        ],
+        borderColor: [
+        ],
+        borderWidth: 2
       }]
     },
     options: {
