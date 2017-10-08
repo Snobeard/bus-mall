@@ -2,19 +2,18 @@
 
 // store images
 Bus.all = [];
-Bus.allVotes = [];
-Bus.allDisplayed = [];
 Bus.allNames = [];
 var random1, random2, random3;
 var duplicateCheck = [];
-var info = document.getElementById('information');
-var totalClicks = 0; // eslint-disable-line
+var totalClicks = 0;
 var localBusVotes, localBusDisplayed, localClicks;
 
 if (!localStorage.busVotes) {
   localBusVotes = [];
+  localBusDisplayed = [];
 } else {
   localBusVotes = JSON.parse(localStorage.busVotes);
+  localBusDisplayed = JSON.parse(localStorage.busDisplayed);
 }
 if (!localStorage.totalClicks) {
   localClicks = 0;
@@ -31,6 +30,19 @@ function Bus(name, fileName) {
   this.displayed = 0;
   Bus.all.push(this);
 }
+
+// event listeners
+var imgEl = document.getElementById('random_image');
+imgEl.addEventListener('click', vote);
+var imgEl2 = document.getElementById('random_image_2');
+imgEl2.addEventListener('click', vote);
+var imgEl3 = document.getElementById('random_image_3');
+imgEl3.addEventListener('click', vote);
+document.getElementById('start').addEventListener('click', startQuizButton);
+document.getElementById('tryAgain').addEventListener('click', tryAgain);
+document.getElementById('clearResults').addEventListener('click', clearResults);
+
+
 
 // new images
 new Bus('Bag', 'bag.jpg');
@@ -54,53 +66,30 @@ new Bus('Usb', 'usb.gif');
 new Bus('Water Can', 'water-can.jpg');
 new Bus('Wine Glass', 'wine-glass.jpg');
 
-
-function vote(event) { //
-  for (var i = 0; i < Bus.all.length; i ++) {
-    if (event.target.alt === Bus.all[i].alt) {
-      break;
-    }
-  }
-  addVote(i);
+function startQuizButton() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('imagesDisplayed').style.display = 'inline-block';
 }
 
-function addVote(selected) {
-  totalClicks += 1;
+function tryAgain() {
+  startQuizButton();
+  document.getElementById('resultsChart').style.display = 'none'; // display chart
+  document.getElementById('tryAgain').style.display = 'none';
+  document.getElementById('information').style.backgroundColor = 'orange'; // set chart background color to white
+  document.getElementById('imagesDisplayed').style.display = 'inline-block';
+  document.getElementById('canvasGoesHere').removeChild(document.getElementById('resultsChart')); // display chart
 
-  Bus.all[random1].displayed += 1; // adds a  +1 counter to each image that was shown
-  Bus.all[random2].displayed += 1;
-  Bus.all[random3].displayed += 1;
-
-  Bus.all[selected].votes += 1; // adds vote to image selected
-
-  console.log('name is ' + Bus.all[selected].name + ': ' + Bus.all[selected].votes); // console log for selected validation
-  randomize(); // creates random image for all three sections
+  totalClicks = 0;
+  randomize();
 }
-
-function buildData() { // eslint-disable-line
-  for (var i = 0; i < Bus.all.length; i ++) { // cycles through images
-    var ulEl = document.createElement('ul'); // creates unordered list
-
-    var liEl = document.createElement('li'); // create list element
-    liEl.textContent = Bus.all[i].name; // add the name for each image
-    ulEl.appendChild(liEl); // adds the created name list to the unordered list
-    liEl = document.createElement('li');
-    liEl.textContent = Bus.all[i].votes + ' vote(s) for the ' + Bus.all[i].name; // adds votes for each image
-    ulEl.appendChild(liEl);
-    liEl = document.createElement('li');
-    liEl.textContent = 'Displayed: ' + Bus.all[i].displayed; // adds times displayed
-    ulEl.appendChild(liEl);
-    liEl = document.createElement('li');
-    liEl.textContent = 'Percentage: ' + ((Bus.all[i].votes / Bus.all[i].displayed) * 100).toFixed(2) + '%'; // adds percentage given from votes and times displayed
-    ulEl.appendChild(liEl);
-
-    info.prepend(ulEl); // attaches entire unorodered list created to 'information' ID
-  }
+function clearResults() {
+  localStorage.clear();
+  window.location.replace('index.html');
 }
 
 function randomize() {
   if (totalClicks >= 25) { // when 25 cycles are met.
-    info.removeChild(imagesDisplayed); // clears the images window
+    document.getElementById('imagesDisplayed').style.display = 'none';
     console.log('pictures cleared'); // acknowledgement
     submitResults(); // creates lists for each picture responding name/votes/times displayed/and percentage.
   } else {
@@ -130,23 +119,31 @@ function randomize() {
   }
 }
 
-// event listeners
-var imgEl = document.getElementById('random_image');
-imgEl.addEventListener('click', vote);
-var imgEl2 = document.getElementById('random_image_2');
-imgEl2.addEventListener('click', vote);
-var imgEl3 = document.getElementById('random_image_3');
-imgEl3.addEventListener('click', vote);
+function vote(event) { //
+  for (var i = 0; i < Bus.all.length; i ++) {
+    if (event.target.alt === Bus.all[i].alt) {
+      break;
+    }
+  }
+  addVote(i);
+}
 
-randomize(); // runs starter images
+function addVote(selected) {
+  totalClicks += 1;
+
+  Bus.all[random1].displayed += 1; // adds a  +1 counter to each image that was shown
+  Bus.all[random2].displayed += 1;
+  Bus.all[random3].displayed += 1;
+
+  Bus.all[selected].votes += 1; // adds vote to image selected
+
+  console.log('name is ' + Bus.all[selected].name + ': ' + Bus.all[selected].votes); // console log for selected validation
+  randomize(); // creates random image for all three sections
+}
 
 function submitResults() {
-  Bus.allVotes = [];
-  Bus.allDisplayed = [];
   Bus.allNames = [];
   for (var i = 0; i < Bus.all.length; i ++){
-    Bus.allVotes.push(Bus.all[i].votes);
-    Bus.allDisplayed.push(Bus.all[i].displayed);
     Bus.allNames.push(Bus.all[i].name);
 
     if (isNaN(localBusVotes[i])) {
@@ -154,20 +151,29 @@ function submitResults() {
     } else {
       localBusVotes[i] = localBusVotes[i] + Bus.all[i].votes;
     }
+    if (isNaN(localBusDisplayed[i])) {
+      localBusDisplayed[i] = 0 + Bus.all[i].displayed;
+    } else {
+      localBusDisplayed[i] = localBusDisplayed[i] + Bus.all[i].displayed;
+    }
   };
-
 
   localClicks = localClicks + totalClicks;
   localStorage.totalClicks = JSON.stringify(localClicks);
   localStorage.busVotes = JSON.stringify(localBusVotes);
+  localStorage.busDisplayed = JSON.stringify(localBusDisplayed);
 
-  document.getElementById('resultsChart').style.display = 'show'; // display chart
   document.getElementById('information').style.backgroundColor = '#fffbf5'; // set chart background color to white
+  document.getElementById('tryAgain').style.display = 'block';
   buildChart();
 }
 
-// run Chart
-function buildChart() {
+function buildChart() { // run Chart.js
+  var newCanvas = document.createElement('canvas');
+  newCanvas.setAttribute('id', 'resultsChart');
+  newCanvas.setAttribute('width', '900');
+  newCanvas.setAttribute('height', '500');
+  document.getElementById('canvasGoesHere').appendChild(newCanvas);
   var ctx = document.getElementById('resultsChart').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
@@ -229,6 +235,15 @@ function buildChart() {
           'rgba(255, 159, 64, 1)'
         ],
         borderWidth: 2
+      },
+      {
+        label: 'Displayed out of ' + localClicks,
+        data: localBusDisplayed,
+        backgroundColor: [
+        ],
+        borderColor: [
+        ],
+        borderWidth: 0
       }]
     },
     options: {
@@ -244,3 +259,5 @@ function buildChart() {
     }
   });
 }
+
+randomize(); // runs starter images

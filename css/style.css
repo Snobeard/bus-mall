@@ -2,11 +2,28 @@
   margin: 0px;
   padding: 0px;
 /*   border: red solid 1px; */
+  user-select: none;
 }
+
+p:last-child {}
 header {
   background-color: #d49104;
   height: 100px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header #clearResults {
+  position: absolute;
+  right: -100px;
+  top: -50px;
+  transform: rotate(35deg);
+  padding: 60px 70px 8px 70px;
+  border: #ad0000 solid 5px;
+}
+header #clearResults:hover {
+  background-color: #c1c1c1;
+  border: #ff0000 solid 5px;
 }
 nav {
   height: 50px;
@@ -23,10 +40,23 @@ h1 {
   margin: 30px auto;
   display: inline-block;
 }
-
-
+h3 {
+  font-size: 30px;
+  padding: 20px;
+}
+#welcome p {
+  font-size: 20px;
+  text-align:left;
+}
+#welcome .buttonLabel{
+  text-align: center;
+  padding-top: 70px;
+}
+#welcome button {
+  padding: 8px 20px;
+}
 #imagesDisplayed {
-
+  display: none;
 }
 #imagesDisplayed img {
   width: 300px;
@@ -53,7 +83,20 @@ h1 {
 #resultsChart {
   display: none;
 }
-
+#tryAgain {
+  margin: 30px auto;
+  display: none;
+  padding: 13px 50px;
+  background-color: #c44f48;
+  color: rgb(255, 194, 66);
+  font-size: 30px;
+}
+#tryAgain:hover {
+  background-color: #c53229;
+}
+button:focus {
+  outline: 0;
+}
 
 article {
   border: #c44f48 outset 8px;
