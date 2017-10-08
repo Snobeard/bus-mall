@@ -5,7 +5,6 @@ Bus.all = [];
 Bus.allNames = [];
 var random1, random2, random3;
 var duplicateCheck = [];
-var info = document.getElementById('information');
 var totalClicks = 0;
 var localBusVotes, localBusDisplayed, localClicks;
 
